@@ -15,5 +15,6 @@ public class FoodOrderingRequest {
     Integer foodOrderingRequestCode;
     LocalDateTime datetime;
     Customer customer;
+    Boolean completed;
     Set<Order> orderEntities;
 }

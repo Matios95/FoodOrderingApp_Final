@@ -44,4 +44,7 @@ public class ProductEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private PlaceEntity place;
+
+    @Column(name = "image")
+    private byte[] image;
 }

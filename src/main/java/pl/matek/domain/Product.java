@@ -20,4 +20,5 @@ public class Product {
     BigDecimal price;
     Set<Order> orderEntities;
     Place place;
+    Byte[] image;
 }

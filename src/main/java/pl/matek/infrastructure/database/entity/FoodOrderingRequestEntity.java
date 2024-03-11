@@ -28,6 +28,9 @@ public class FoodOrderingRequestEntity {
     @Column(name = "datetime")
     private LocalDateTime datetime;
 
+    @Column(name = "completed")
+    private boolean completed;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;

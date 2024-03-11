@@ -37,4 +37,7 @@ public class PlaceEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
     private Set<ProductEntity> productEntities;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "placeDeliveryAddress")
+    private Set<DeliveryAddressEntity> deliveryAddressEntities;
 }
