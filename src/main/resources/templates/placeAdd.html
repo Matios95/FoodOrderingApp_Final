@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          crossorigin="anonymous">
+    <title>Food ordering application</title>
+</head>
+
+<body>
+<div class="container">
+    <h1>Dodaj lokal</h1>
+    <div class="row mt-3">
+        <form action="#" th:action="@{/place/addPlace}" method="POST" th:object="${placeDTO}">
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="name">Nazwa:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="name" th:field="*{name}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="phone">Telefon:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="phone" th:field="*{phone}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="country">Kraj:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="country" th:field="*{country}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="postcode">Kod pocztowy:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="postcode" th:field="*{postcode}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="street">Ulica:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="street" th:field="*{street}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="streetNumber">Numer lokalu:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="streetNumber" th:field="*{streetNumber}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <input type="submit" value="Utwórz" class="btn btn-success">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>
