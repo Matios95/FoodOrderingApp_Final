@@ -1,6 +1,7 @@
 package pl.matek.domain;
 
 import lombok.*;
+import pl.matek.infrastructure.database.entity.DeliveryAddressEntity;
 
 import java.util.Set;
 
@@ -16,4 +17,5 @@ public class Place {
     Owner owner;
     Address addressPlace;
     Set<Product> productEntities;
+    Set<DeliveryAddress> deliveryAddressEntities;
 }

@@ -10,7 +10,7 @@ import pl.matek.infrastructure.database.entity.PlaceEntity;
 @ToString(of = {"deliveryAddressId", "postcode", "street"})
 public class DeliveryAddress {
     Integer deliveryAddressId;
-    PlaceEntity placeDeliveryAddress;
+    Place placeDeliveryAddress;
     String postcode;
     String street;
 }

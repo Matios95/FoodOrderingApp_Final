@@ -6,8 +6,11 @@ CREATE TABLE customer
     surname     VARCHAR(32) NOT NULL,
     address_id  INT         NOT NULL,
     PRIMARY KEY (customer_id),
-    UNIQUE(email),
+    UNIQUE (email),
     CONSTRAINT fk_customer_address
         FOREIGN KEY (address_id)
-            REFERENCES address (address_id)
-)
+            REFERENCES address (address_id),
+    CONSTRAINT fk_user_customer
+                FOREIGN KEY (email)
+                    REFERENCES food_ordering_app_user (email)
+);

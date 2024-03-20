@@ -1,7 +1,7 @@
 CREATE TABLE ordera
 (
     ordera_id                   SERIAL                      NOT NULL,
-    ordera_code                 INT                         NOT NULL,
+    ordera_code                 VARCHAR(128)                 NOT NULL,
     product_id                  INT                         NOT NULL,
     quantity                    INT                         NOT NULL,
     food_ordering_request_id    INT                         NOT NULL,

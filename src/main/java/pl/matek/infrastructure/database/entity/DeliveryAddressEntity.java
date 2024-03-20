@@ -11,17 +11,17 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "deliveryAddress")
+@Table(name = "delivery_address")
 public class DeliveryAddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "deliveryAddress_id")
+    @Column(name = "delivery_address_id")
     private Integer deliveryAddressId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
-    private PlaceEntity placeDeliveryAddress;
+    private PlaceEntity placed;
 
     @Column(name = "postcode")
     private String postcode;

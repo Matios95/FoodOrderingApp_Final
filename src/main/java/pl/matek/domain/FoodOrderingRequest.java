@@ -12,7 +12,7 @@ import java.util.Set;
 @ToString(of = {"foodOrderingRequestId", "foodOrderingRequestCode", "datetime"})
 public class FoodOrderingRequest {
     Integer foodOrderingRequestId;
-    Integer foodOrderingRequestCode;
+    String foodOrderingRequestCode;
     LocalDateTime datetime;
     Customer customer;
     Boolean completed;

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Place create panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    </br>
+    <a th:href="@{/owner/placeCreate/{placeId}/deliveryAddress(placeId=${PlaceID})}"
+       class="btn btn-primary" role="button">Next</a>
+    </br>
+
+    </br>
+    <p>Here is a list product a for your place!</p>
+
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+                <tr th:each="product : ${ProductDTOs}">
+                    <td th:text="${product.type}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.description}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td>
+                        <img src="" th:attr="src=${product.imageByte}" height="100px">
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+
+    </br>
+    </br>
+    <form method="post"
+          role="form"
+          th:action="@{/owner/placeCreate/{placeId}/productAdd(placeId=${PlaceID})}"
+          th:object="${ProductDTO}"
+          enctype="multipart/form-data"
+    >
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="validationCustom02">Name</label>
+                <input type="text" th:field="*{name}" class="form-control" id="validationCustom02" placeholder="Name">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationCustom03">Price</label>
+                <input type="text" th:field="*{price}" class="form-control" id="validationCustom03" placeholder="Price">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="exampleFormControlTextarea1">Description</label>
+                <textarea th:field="*{description}" class="form-control" id="exampleFormControlTextarea1" rows="3"
+                          placeholder="Description"></textarea>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label>Type</label>
+                <select th:field="*{type}" class="custom-select custom-select-sm">
+                    <option th:each="i : *{type}" th:value="${i}" th:text="${i}">
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="exampleFormControlFile1">Example image input</label>
+                <input th:field="*{image}" type="file" class="form-control-file" id="exampleFormControlFile1">
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Create product</button>
+    </form>
+</div>
+</body>
+</html>

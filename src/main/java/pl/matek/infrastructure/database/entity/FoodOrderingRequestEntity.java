@@ -23,7 +23,7 @@ public class FoodOrderingRequestEntity {
     private Integer foodOrderingRequestId;
 
     @Column(name = "food_ordering_request_code", unique = true)
-    private Integer foodOrderingRequestCode;
+    private String foodOrderingRequestCode;
 
     @Column(name = "datetime")
     private LocalDateTime datetime;

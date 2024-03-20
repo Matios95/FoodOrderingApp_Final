@@ -5,5 +5,8 @@ CREATE TABLE owner
     name        VARCHAR(32) NOT NULL,
     surname     VARCHAR(32) NOT NULL,
     PRIMARY KEY (owner_id),
-    UNIQUE (email)
-)
+    UNIQUE (email),
+    CONSTRAINT fk_user_owner
+        FOREIGN KEY (email)
+            REFERENCES food_ordering_app_user (email)
+);

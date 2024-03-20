@@ -7,7 +7,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/Food_ordering
+    url: jdbc:postgresql://localhost:5432/Food_ordering_app
     username: postgres
     password: postgres
     hikari:
@@ -25,3 +25,7 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

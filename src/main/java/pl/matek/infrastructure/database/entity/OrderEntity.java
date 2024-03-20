@@ -20,7 +20,7 @@ public class OrderEntity {
     private Integer orderaId;
 
     @Column(name = "ordera_code", unique = true)
-    private Integer orderaCode;
+    private String orderaCode;
 
     @Column(name = "quantity")
     private Integer quantity;

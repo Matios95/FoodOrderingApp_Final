@@ -9,7 +9,7 @@ import lombok.*;
 @ToString(of = {"orderaId", "orderaCode", "quantity"})
 public class Order {
     Integer orderaId;
-    Integer orderaCode;
+    String orderaCode;
     Integer quantity;
     FoodOrderingRequest foodOrderingRequestEntity;
     Product product;

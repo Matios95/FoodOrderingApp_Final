@@ -1,27 +1,83 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+    <meta charset="UTF-8">
+    <title>Owner panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
-          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
-    <title>Food ordering application</title>
 </head>
-
 <body>
 <div class="container">
-    <h1>Panel właściciela lokalu</h1>
     <div class="row mt-3">
         <div class="col-md-4">
-            <a th:href="@{/owner/places}" class="btn btn-info" role="button">Zobacz liste lokali</a>
-        </div>
-        <div class="col-md-4">
-            <a th:href="@{/place/add}" class="btn btn-info" role="button">Dodaj lokal</a>
+            <a th:href="@{/owner/placeCreate}" class="btn btn-info" role="button">Create new place</a>
         </div>
     </div>
+    </br>
+
+    <h2 th:text="${OwnerName}"></h2>
+    <p>Here is a list for your places!</p>
+
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>Phone</th>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Postcode</th>
+            <th>Street</th>
+            <th>Street number</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="place : ${PlaceDTOs}">
+            <td th:text="${place.phone}"></td>
+            <td th:text="${place.name}"></td>
+            <td th:text="${place.country}"></td>
+            <td th:text="${place.postcode}"></td>
+            <td th:text="${place.street}"></td>
+            <td th:text="${place.streetNumber}"></td>
+            <td>
+                <a th:href="@{/owner/placeCreate/{placeId}/menu(placeId=${place.placeId})}"
+                   class="btn btn-success" role="button"><i class="fas fa-edit">Edit</i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    </br>
+    <p>Here is a list for your orders!</p>
+
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>Order code</th>
+            <th>Date time</th>
+            <th>Place name</th>
+            <th>Delivery address</th>
+            <th>Postcode</th>
+            <th>Product list</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--        <tr th:each="place : ${PlaceDTOs}">-->
+        <!--            <td th:text="${place.phone}"></td>-->
+        <!--            <td th:text="${place.name}"></td>-->
+        <!--            <td th:text="${place.country}"></td>-->
+        <!--            <td th:text="${place.postcode}"></td>-->
+        <!--            <td th:text="${place.street}"></td>-->
+        <!--            <td th:text="${place.streetNumber}"></td>-->
+        <!--            <td th:text="${place.streetNumber}"></td>-->
+        <!--        </tr>-->
+        </tbody>
+    </table>
+
 </div>
 </body>
-
 </html>
