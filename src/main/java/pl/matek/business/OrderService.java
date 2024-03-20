@@ -5,28 +5,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.matek.business.dao.FoodOrderingRequestDAO;
-import pl.matek.domain.Customer;
 import pl.matek.domain.FoodOrderingRequest;
+import pl.matek.domain.Order;
 
 import java.util.List;
 
 @Slf4j
 @Service
 @AllArgsConstructor
-public class FoodOrderingRequestService {
+public class OrderService {
 
-    private FoodOrderingRequestDAO foodOrderingRequestDAO;
-
-    @Transactional
-    public List<FoodOrderingRequest> findAllWithCustomer(Customer customer) {
-
-        //todo
-        return null;
-    }
+    private final FoodOrderingRequestDAO foodOrderingRequestDAO;
 
     @Transactional
-    public FoodOrderingRequest findById(Integer forId) {
+    public List<Order> findByFoodOrderingRequest(FoodOrderingRequest foodOrderingRequest) {
         //todo
+
         return null;
     }
 }

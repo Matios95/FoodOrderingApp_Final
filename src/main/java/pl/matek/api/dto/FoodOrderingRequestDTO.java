@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -14,5 +12,13 @@ import java.time.LocalDateTime;
 public class FoodOrderingRequestDTO {
 
     private String foodOrderingRequestCode;
-    private LocalDateTime datetime;
+    private String datetime;
+    private String customerName;
+    private String customerSurname;
+    private String addressCountry;
+    private String addressPostcode;
+    private String addressStreet;
+    private String addressStreetNumber;
+
+
 }
