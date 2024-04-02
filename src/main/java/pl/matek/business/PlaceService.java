@@ -39,9 +39,14 @@ public class PlaceService {
     @Transactional
     public Place findById(Integer placeId) {
         Optional<Place> place = placeDAO.findById(placeId);
-        if (place.isEmpty()){
+        if (place.isEmpty()) {
             throw new NotFoundException("Could not find service by placeId: [%s]".formatted(placeId));
         }
         return place.get();
+    }
+
+    @Transactional
+    public List<Place> findAllPlaceWithParam(String postcode, String street) {
+        return placeDAO.findAllPlaceWithParam(postcode, street);
     }
 }

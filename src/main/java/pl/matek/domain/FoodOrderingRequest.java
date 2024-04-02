@@ -2,7 +2,7 @@ package pl.matek.domain;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Set;
 
 @With
@@ -13,7 +13,7 @@ import java.util.Set;
 public class FoodOrderingRequest {
     Integer foodOrderingRequestId;
     String foodOrderingRequestCode;
-    LocalDateTime datetime;
+    OffsetDateTime datetime;
     Customer customer;
     Boolean completed;
     Set<Order> orderEntities;

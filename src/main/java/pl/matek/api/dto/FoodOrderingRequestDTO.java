@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FoodOrderingRequestDTO {
 
+    private Integer foodOrderingRequestId;
     private String foodOrderingRequestCode;
     private String datetime;
     private String customerName;
@@ -19,6 +20,5 @@ public class FoodOrderingRequestDTO {
     private String addressPostcode;
     private String addressStreet;
     private String addressStreetNumber;
-
-
+    private Boolean completed;
 }

@@ -5,13 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchStreetDTO {
+public class MenusDTO {
 
-    //todo validacja
-    private String postCode;
-    private String street;
+    private List<MenuDTO> menuDTOList;
 }

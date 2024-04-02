@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Customer panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+    </br>
+
+    </br>
+        <p>Order code:
+        <span th:text="${foodOrderingRequestDTO.foodOrderingRequestCode}"></span></p>
+
+        <p>Customer name:
+        <span th:text="${foodOrderingRequestDTO.customerName}"></span></p>
+
+        <p>Customer surname:
+        <span th:text="${foodOrderingRequestDTO.customerSurname}"></span></p>
+
+        <p>Date time order:
+        <span th:text="${foodOrderingRequestDTO.datetime}"></span></p>
+
+        <p>Delivery address:
+        <span th:text="${foodOrderingRequestDTO.addressCountry}">,</span>
+        <span th:text="${foodOrderingRequestDTO.addressPostcode}">,</span>
+        <span th:text="${foodOrderingRequestDTO.addressStreet}"></span>
+        <span th:text="${foodOrderingRequestDTO.addressStreetNumber}"></span></p>
+
+
+    </br>
+    </br>
+
+        <table class="table">
+            <thead class="table-dark">
+            <tr>
+                <th>Product name</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orderDTOs}">
+                <td th:text="${order.productName}"></td>
+                <td th:text="${order.productType}"></td>
+                <td th:text="${order.quantity}"></td>
+                <td th:text="${order.price}"></td>
+            </tr>
+            </tbody>
+
+        </table>
+
+    </br>
+    <a th:href="@{/customer}"
+       class="btn btn-primary" role="button">Back to the main page</a>
+</div>
+
+</body>
+</html>

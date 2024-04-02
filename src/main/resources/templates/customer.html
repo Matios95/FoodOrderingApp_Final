@@ -12,7 +12,61 @@
 </head>
 <body>
 
+<div class="container">
+    </br>
 
+    </br>
+
+    <h2 th:text="${CustomerName}"></h2>
+    <p>Here is a list active order: </p>
+
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>Order time</th>
+            <th>Order code</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${foodOrderingRequestDTOs}">
+            <td th:text="${order.datetime}"></td>
+            <td th:text="${order.foodOrderingRequestCode}"></td>
+            <td>
+                <a th:href="@{/customer/tally/{forId}/info(forId=${order.foodOrderingRequestId})}"
+                   class="btn btn-success" role="button"><i class="fas fa-info">Info</i></a>
+            </td>
+            <td>
+                <a th:href="@{/customer/tally/{forId}/delete(forId=${order.foodOrderingRequestId})}"
+                   class="btn btn-warning" role="button"><i class="fas fa-edit">Delete</i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    </br>
+    </br>
+    <p>Search place:</p>
+
+    <form method="post"
+          role="form"
+          th:action="@{/customer/searchPlaces}"
+          th:object="${searchPlace}"
+    >
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="validationCustom02">Post code</label>
+                <input type="text" th:field="*{postcode}" class="form-control" id="validationCustom02" placeholder="Post code">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationCustom03">Street</label>
+                <input type="text" th:field="*{street}" class="form-control" id="validationCustom03" placeholder="Street">
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Search place</button>
+    </form>
+</div>
 
 </body>
 </html>

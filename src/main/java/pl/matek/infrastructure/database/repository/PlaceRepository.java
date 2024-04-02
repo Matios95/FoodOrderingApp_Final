@@ -43,5 +43,12 @@ public class PlaceRepository implements PlaceDAO {
                 .map(placeEntityMapper::mapFromEntity);
     }
 
+    @Override
+    public List<Place> findAllPlaceWithParam(String postcode, String street) {
+        return placeJpaRepository.findAllParams(postcode, street).stream()
+                .map(placeEntityMapper::mapFromEntity)
+                .toList();
+    }
+
 
 }

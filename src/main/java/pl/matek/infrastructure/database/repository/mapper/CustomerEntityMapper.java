@@ -13,4 +13,7 @@ public interface CustomerEntityMapper {
     @Mapping (target = "addressCustomer.customerEntities", ignore = true)
     @Mapping(target = "foodOrderingRequestEntities", ignore = true)
     Customer mapFromEntity(CustomerEntity customerEntity);
+
+    @Mapping(target = "foodOrderingRequestEntities", ignore = true)
+    CustomerEntity mapToEntity(Customer customer);
 }

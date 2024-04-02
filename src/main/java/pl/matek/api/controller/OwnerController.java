@@ -11,19 +11,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.matek.api.dto.DeliveryAddressDTO;
+import pl.matek.api.dto.FoodOrderingRequestDTO;
 import pl.matek.api.dto.PlaceDTO;
 import pl.matek.api.dto.ProductDTO;
 import pl.matek.api.dto.mapper.DeliveryAddressMapper;
+import pl.matek.api.dto.mapper.FoodOrderingRequestMapper;
 import pl.matek.api.dto.mapper.PlaceMapper;
 import pl.matek.api.dto.mapper.ProductMapper;
-import pl.matek.business.DeliveryAddressService;
-import pl.matek.business.OwnerService;
-import pl.matek.business.PlaceService;
-import pl.matek.business.ProductService;
+import pl.matek.business.*;
 import pl.matek.domain.Owner;
 import pl.matek.domain.Place;
 import pl.matek.domain.exception.ProcessingException;
 import pl.matek.infrastructure.database.entity.ProductType;
+import pl.matek.infrastructure.database.repository.jpa.FoodOrderingRequesJpaRepository;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -42,12 +42,18 @@ public class OwnerController {
     static final String DELIVERY_ADDRESS_ADD = "/owner/placeCreate/{placeId}/deliveryAddressAdd";
 
     private final OwnerService ownerService;
-    private final PlaceService placeService;
-    private final ProductService productService;
-    private final DeliveryAddressService deliveryAddressService;
     private final PlaceMapper placeMapper;
+    private final PlaceService placeService;
     private final ProductMapper productMapper;
+    private final ProductService productService;
     private final DeliveryAddressMapper deliveryAddressMapper;
+    private final DeliveryAddressService deliveryAddressService;
+    private final FoodOrderingRequestMapper foodOrderingRequestMapper;
+    private final FoodOrderingRequestService foodOrderingRequestService;
+
+
+    private final FoodOrderingRequesJpaRepository foodOrderingRequesJpaRepository;
+
 
     @GetMapping(value = OWNER)
     public String ownerPanel(
@@ -59,8 +65,15 @@ public class OwnerController {
         List<PlaceDTO> allPlaceOwner = placeService.findAllPlaceWithOwner(email).stream()
                 .map(placeMapper::map)
                 .toList();
+
+//        List<FoodOrderingRequestDTO> foodOrderingRequestDTOs =
+//                foodOrderingRequestService.findAllWithOwner(email).stream()
+//                        .map(foodOrderingRequestMapper::map)
+//                                .toList();
+
         model.addAttribute("OwnerName", "Hello: " + getOwner(email).getName());
         model.addAttribute("PlaceDTOs", allPlaceOwner);
+//        model.addAttribute("FORDTOs", foodOrderingRequestDTOs);
         return "owner";
     }
 
@@ -120,7 +133,6 @@ public class OwnerController {
     public String deliveryAddress(
             @PathVariable("placeId") Integer placeId,
             Authentication authentication,
-            HttpServletRequest request,
             Model model
     ) {
         checkOwner(placeId, authentication);

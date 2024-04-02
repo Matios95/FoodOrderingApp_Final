@@ -12,4 +12,6 @@ public interface PlaceDAO {
     Place createPlace(Place place);
 
     Optional<Place> findById(Integer placeId);
+
+    List<Place> findAllPlaceWithParam(String postcode, String street);
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Customer panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+    </br>
+
+    </br>
+    <p>Here is a list places: </p>
+
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>Place phone</th>
+            <th>Place name</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="place : ${PlaceDTOs}">
+            <td th:text="${place.phone}"></td>
+            <td th:text="${place.name}"></td>
+            <td>
+                <a th:href="@{/customer/{placeID}/menu(placeID=${place.placeId})}"
+                   class="btn btn-success" role="button"><i class="fas fa-info">Menu</i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    </br>
+    <a th:href="@{/customer}"
+       class="btn btn-primary" role="button">Back to the main page</a>
+</div>
+
+</body>
+</html>

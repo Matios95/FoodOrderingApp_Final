@@ -34,4 +34,10 @@ public class ProductRepository implements ProductDAO {
         ProductEntity toSave = productEntityMapper.mapToEntity(product);
         productJpaRepository.save(toSave);
     }
+
+    @Override
+    public Product findByCode(String productCode) {
+        ProductEntity productEntity = productJpaRepository.findByProductCode(productCode);
+        return productEntityMapper.mapFromEntity(productEntity);
+    }
 }

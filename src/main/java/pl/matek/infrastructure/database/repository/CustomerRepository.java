@@ -23,4 +23,11 @@ public class CustomerRepository implements CustomerDAO {
         Optional<CustomerEntity> saved = customerJpaRepository.findByEmail(email);
         return saved.map(customerEntityMapper::mapFromEntity);
     }
+
+    @Override
+    public Customer customerCreate(Customer customer) {
+        CustomerEntity toSave = customerEntityMapper.mapToEntity(customer);
+        CustomerEntity saved = customerJpaRepository.save(toSave);
+        return customerEntityMapper.mapFromEntity(saved);
+    }
 }

@@ -3,7 +3,7 @@ package pl.matek.infrastructure.database.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Set;
 
 @Getter
@@ -26,7 +26,7 @@ public class FoodOrderingRequestEntity {
     private String foodOrderingRequestCode;
 
     @Column(name = "datetime")
-    private LocalDateTime datetime;
+    private OffsetDateTime datetime;
 
     @Column(name = "completed")
     private boolean completed;
@@ -35,7 +35,7 @@ public class FoodOrderingRequestEntity {
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "foodOrderingRequestEntity")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "foodOrderingRequestEntity", orphanRemoval = true)
     private Set<OrderEntity> orderEntities;
 
 }

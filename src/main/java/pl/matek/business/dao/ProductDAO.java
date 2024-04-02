@@ -9,4 +9,6 @@ public interface ProductDAO {
     List<Product> findAllProductWithPlace(Place place);
 
     void productCreate(Product product);
+
+    Product findByCode(String productCode);
 }

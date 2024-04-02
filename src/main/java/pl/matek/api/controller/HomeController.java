@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.matek.api.dto.CustomerRegisterDTO;
 import pl.matek.api.dto.OwnerRegisterDTO;
+import pl.matek.api.dto.mapper.CustomerRegisterMapper;
 import pl.matek.api.dto.mapper.OwnerRegisterMapper;
 import pl.matek.business.RegisterService;
+import pl.matek.domain.CustomerRegister;
 import pl.matek.domain.OwnerRegister;
 
 import java.util.Optional;
@@ -32,8 +34,9 @@ public class HomeController {
     static final String REGISTER_OWNER_SAVE = "/registerOwner/save";
 
     private final PasswordEncoder passwordEncoder;
-    private final OwnerRegisterMapper ownerRegisterMapper;
     private final RegisterService registerService;
+    private final OwnerRegisterMapper ownerRegisterMapper;
+    private final CustomerRegisterMapper customerRegisterMapper;
     private final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
     @GetMapping(value = LOGIN)
@@ -84,6 +87,17 @@ public class HomeController {
         ownerRegisterDTO.setPassword(passwordEncoder.encode(ownerRegisterDTO.getPassword()));
         OwnerRegister ownerRegister = ownerRegisterMapper.map(ownerRegisterDTO);
         registerService.ownerCreate(ownerRegister);
+        return "login";
+    }
+
+    @PostMapping(value = REGISTER_CUSTOMER_SAVE)
+    public String registerCustomerSave(
+            //todo walidacja
+            @ModelAttribute("CustomerDTO") CustomerRegisterDTO customerRegisterDTO
+    ){
+        customerRegisterDTO.setPassword(passwordEncoder.encode(customerRegisterDTO.getPassword()));
+        CustomerRegister customerRegister = customerRegisterMapper.map(customerRegisterDTO);
+        registerService.customerCreate(customerRegister);
         return "login";
     }
 }

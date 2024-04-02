@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface CustomerDAO {
     Optional<Customer> findByCustomer(String email);
+
+    Customer customerCreate(Customer customer);
 }

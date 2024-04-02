@@ -14,21 +14,17 @@ import java.util.Set;
 
 @Repository
 @AllArgsConstructor
-public class UserRepository  implements UserDAO {
+public class UserRepository implements UserDAO {
 
     private final UserJpaRepository userJpaRepository;
     private final UserEntityMapper userEntityMapper;
-    //--------
     private final RoleRepository roleRepository;
-    //-------
 
     @Override
-    public User saveCreate(User user) {
-
+    public User saveCreate(String role, User user) {
 
         UserEntity toSave = userEntityMapper.mapToEntity(user);
-//        toSave.setRoles((Set<RoleEntity>) roleRepository.findByRole("OWNER"));
-        RoleEntity roleEntity = roleRepository.findByRole("OWNER");
+        RoleEntity roleEntity = roleRepository.findByRole(role);
         toSave.setRoles(Set.of(roleEntity));
         UserEntity saved = userJpaRepository.save(toSave);
         return userEntityMapper.mapFromEntity(saved);

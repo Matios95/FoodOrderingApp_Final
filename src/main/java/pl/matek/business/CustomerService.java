@@ -25,4 +25,8 @@ public class CustomerService {
         }
         return customer.get();
     }
+
+    public Customer customerCreate(Customer customer) {
+        return customerDAO.customerCreate(customer);
+    }
 }
