@@ -22,8 +22,7 @@ public class FoodOrderingRequestService {
 
     private FoodOrderingRequestDAO foodOrderingRequestDAO;
     private OrderService orderService;
-    private OwnerService ownerService;
-    private PlaceService placeService;
+    private ProductService productService;
 
     @Transactional
     public List<FoodOrderingRequest> findAllWithCustomer(Customer customer) {
@@ -58,28 +57,24 @@ public class FoodOrderingRequestService {
     }
 
     @Transactional
-    public Set<FoodOrderingRequest> findAllWithOwner(String email) {
-//        List<Place> place1 = placeService.findAllPlaceWithOwner(email);
+    public Map<Boolean, Set<FoodOrderingRequest>> findAllWithOwner(List<Place> allPlaceOwner) {
 
-//        TreeSet<FoodOrderingRequest> collect = place1.stream()
-//                .map(place -> place.getProductEntities().stream()
-//                        .map(product -> product.getOrderEntities().stream()
-//                                .map(Order::getFoodOrderingRequestEntity)
-//                                .toList())
-//                        .toList())
-//                .toList().stream()
-//                .flatMap(Collection::stream)
-//                .flatMap(Collection::stream)
-//                .sorted(Comparator.comparing(FoodOrderingRequest::getDatetime))
-//                .collect(Collectors.toCollection(TreeSet::new));
-//
-//        collect.forEach(System.out::println);
+        Map<Boolean, Set<FoodOrderingRequest>> collect = allPlaceOwner.stream()
+                .map(place -> productService.findAllProductWithPlace(place).stream()
+                        .map(product -> orderService.findAllOrderWithProduct(product).stream()
+                                .map(order -> order.getFoodOrderingRequestEntity())
+                                .toList())
+                        .flatMap(List::stream)
+                        .toList())
+                .flatMap(List::stream)
+                .collect(Collectors.groupingBy(
+                        FoodOrderingRequest::getCompleted, Collectors.toSet()));
 
+        return collect;
+    }
 
-//        place1.stream()
-//                .map(x -> x.getProductEntities().stream()
-//                        .toList()).toList()
-//                .stream().flatMap(List::stream).toList();
-        return Collections.emptySet();
+    @Transactional
+        public void completed(Integer forId) {
+        foodOrderingRequestDAO.completed(forId);
     }
 }

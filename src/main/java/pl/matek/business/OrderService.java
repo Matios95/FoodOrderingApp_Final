@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.matek.business.dao.OrderProcessingDAO;
 import pl.matek.domain.FoodOrderingRequest;
 import pl.matek.domain.Order;
+import pl.matek.domain.Product;
 
 import java.util.List;
 
@@ -24,5 +25,9 @@ public class OrderService {
 
     public void create(Order order) {
         orderProcessingDAO.create(order);
+    }
+
+    public List<Order> findAllOrderWithProduct(Product product) {
+        return orderProcessingDAO.findAllOrderWithProduct(product);
     }
 }

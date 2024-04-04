@@ -2,6 +2,7 @@ package pl.matek.business.dao;
 
 import pl.matek.domain.Customer;
 import pl.matek.domain.FoodOrderingRequest;
+import pl.matek.domain.Place;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,6 @@ public interface FoodOrderingRequestDAO {
     FoodOrderingRequest save(FoodOrderingRequest foodOrderingRequest);
 
     void delete(Integer forId);
+
+    void completed(Integer forId);
 }

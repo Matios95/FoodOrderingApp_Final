@@ -19,15 +19,14 @@ import pl.matek.api.dto.mapper.FoodOrderingRequestMapper;
 import pl.matek.api.dto.mapper.PlaceMapper;
 import pl.matek.api.dto.mapper.ProductMapper;
 import pl.matek.business.*;
+import pl.matek.domain.FoodOrderingRequest;
 import pl.matek.domain.Owner;
 import pl.matek.domain.Place;
 import pl.matek.domain.exception.ProcessingException;
 import pl.matek.infrastructure.database.entity.ProductType;
 import pl.matek.infrastructure.database.repository.jpa.FoodOrderingRequesJpaRepository;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @AllArgsConstructor
@@ -40,6 +39,7 @@ public class OwnerController {
     static final String PRODUCT_ADD = "/owner/placeCreate/{placeId}/productAdd";
     static final String DELIVERY_ADDRESS = "/owner/placeCreate/{placeId}/deliveryAddress";
     static final String DELIVERY_ADDRESS_ADD = "/owner/placeCreate/{placeId}/deliveryAddressAdd";
+    static final String COMPLETED_ORDER = "/owner/completedOrder/{forId}";
 
     private final OwnerService ownerService;
     private final PlaceMapper placeMapper;
@@ -62,18 +62,24 @@ public class OwnerController {
             Model model
     ) {
         String email = authentication.getName();
-        List<PlaceDTO> allPlaceOwner = placeService.findAllPlaceWithOwner(email).stream()
+        List<Place> allPlaceWithOwner = placeService.findAllPlaceWithOwner(email);
+        List<PlaceDTO> allPlaceOwner = allPlaceWithOwner.stream()
                 .map(placeMapper::map)
                 .toList();
 
-//        List<FoodOrderingRequestDTO> foodOrderingRequestDTOs =
-//                foodOrderingRequestService.findAllWithOwner(email).stream()
-//                        .map(foodOrderingRequestMapper::map)
-//                                .toList();
+        Map<Boolean, Set<FoodOrderingRequest>> allWithOwner = foodOrderingRequestService.findAllWithOwner(allPlaceWithOwner);
+
+        List<FoodOrderingRequestDTO> foodOrderingRequestDTOsFalse = allWithOwner.getOrDefault(false, Collections.emptySet()).stream()
+                .map(foodOrderingRequestMapper::map)
+                .toList();
+        List<FoodOrderingRequestDTO> foodOrderingRequestDTOsTrue = allWithOwner.getOrDefault(true, Collections.emptySet()).stream()
+                .map(foodOrderingRequestMapper::map)
+                .toList();
 
         model.addAttribute("OwnerName", "Hello: " + getOwner(email).getName());
         model.addAttribute("PlaceDTOs", allPlaceOwner);
-//        model.addAttribute("FORDTOs", foodOrderingRequestDTOs);
+        model.addAttribute("FORDTOsFalse", foodOrderingRequestDTOsFalse);
+        model.addAttribute("FORDTOsTrue", foodOrderingRequestDTOsTrue);
         return "owner";
     }
 
@@ -151,14 +157,22 @@ public class OwnerController {
     public String deliveryAddressAdd(
             @ModelAttribute("DeliveryAddressDTO") DeliveryAddressDTO deliveryAddressDTO,
             @PathVariable("placeId") Integer placeId,
-            Authentication authentication,
-            HttpServletRequest request
+            Authentication authentication
 
     ) {
         checkOwner(placeId, authentication);
         deliveryAddressService.deliveryAddressCreate(deliveryAddressMapper.map(deliveryAddressDTO)
                 .withPlaceDeliveryAddress(getPlace(placeId)));
         return "redirect:" + DELIVERY_ADDRESS;
+    }
+
+    @GetMapping(value = COMPLETED_ORDER)
+    public String completedOrder(
+            @PathVariable("forId") Integer forId,
+            Authentication authentication
+    ){
+        foodOrderingRequestService.completed(forId);
+        return "redirect:" + OWNER;
     }
 
     private Owner getOwner(String email) {

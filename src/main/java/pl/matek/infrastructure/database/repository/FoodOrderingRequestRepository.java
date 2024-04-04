@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import pl.matek.business.dao.FoodOrderingRequestDAO;
 import pl.matek.domain.Customer;
 import pl.matek.domain.FoodOrderingRequest;
+import pl.matek.domain.Place;
+import pl.matek.domain.exception.NotFoundException;
 import pl.matek.infrastructure.database.entity.CustomerEntity;
 import pl.matek.infrastructure.database.entity.FoodOrderingRequestEntity;
 import pl.matek.infrastructure.database.repository.jpa.FoodOrderingRequesJpaRepository;
@@ -12,6 +14,7 @@ import pl.matek.infrastructure.database.repository.mapper.CustomerEntityMapper;
 import pl.matek.infrastructure.database.repository.mapper.FoodOrderingRequestEntityMapper;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -47,4 +50,15 @@ public class FoodOrderingRequestRepository implements FoodOrderingRequestDAO {
     public void delete(Integer forId) {
         foodOrderingRequesJpaRepository.deleteById(forId);
     }
+
+    @Override
+    public void completed(Integer forId) {
+        Optional<FoodOrderingRequestEntity> toSave = foodOrderingRequesJpaRepository.findById(forId);
+        if (toSave.isEmpty()){
+            throw new NotFoundException("Could not find order reques id: [%s]".formatted(forId));
+        }
+        toSave.get().setCompleted(true);
+        foodOrderingRequesJpaRepository.save(toSave.get());
+    }
+
 }

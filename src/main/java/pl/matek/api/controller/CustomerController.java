@@ -1,13 +1,11 @@
 package pl.matek.api.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.matek.api.dto.*;
 import pl.matek.api.dto.mapper.FoodOrderingRequestMapper;
 import pl.matek.api.dto.mapper.OrderMapper;
@@ -19,8 +17,8 @@ import pl.matek.domain.FoodOrderingRequest;
 import pl.matek.domain.Order;
 import pl.matek.domain.Place;
 import pl.matek.domain.exception.ProcessingException;
+import pl.matek.infrastructure.database.entity.PlaceEntity;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +31,6 @@ public class CustomerController {
     static final String TALLY_INFO = "/customer/tally/{forId}/info";
     static final String PLACE_MENU = "/customer/{placeID}/menu";
     static final String SEARCH_PLACES = "/customer/searchPlaces";
-    static final String CUSTOMER_TALLY = "/customer/tally/{forID}";
     static final String TALLY_DELETE = "/customer/tally/{forId}/delete";
 
     static final Long MAX_MINUTE_DELETE_ORDER = 20L;
@@ -56,6 +53,7 @@ public class CustomerController {
         Customer customer = getCustomer(authentication);
         List<FoodOrderingRequestDTO> foodOrderingRequestDTOs = foodOrderingRequestService
                 .findAllWithCustomer(customer).stream()
+                .filter(foodOrderingRequest -> !foodOrderingRequest.getCompleted())
                 .map(foodOrderingRequestMapper::map)
                 .toList();
         model.addAttribute("searchPlace", new SearchPlacesDTO());
@@ -68,8 +66,23 @@ public class CustomerController {
     public String searchPlaces(
             //todo walidacja
             @ModelAttribute("searchPlace") SearchPlacesDTO searchPlacesDTO,
+            @RequestParam("pageNo") String pageNo,
             Model model
     ) {
+
+        System.out.println(pageNo);
+
+//        int pageSize = 7;
+//        if (Objects.isNull(pageNo))
+//            pageNo = 1;
+//        Page<PlaceEntity> page = placeService.findPaginated(pageNo, pageSize);
+//        List<PlaceEntity> listPlaces = page.getContent();
+
+//        model.addAttribute("currentPage", pageNo);
+//        model.addAttribute("totalPages", page.getTotalPages());
+//        model.addAttribute("total", page.getTotalElements());
+//        model.addAttribute("listPlaces", listPlaces);
+
         List<PlaceDTO> placeDTOs = placeService
                 .findAllPlaceWithParam(searchPlacesDTO.getPostcode(), searchPlacesDTO.getStreet()).stream()
                 .map(placeMapper::map)
