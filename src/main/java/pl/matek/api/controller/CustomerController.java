@@ -2,6 +2,7 @@ package pl.matek.api.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import pl.matek.domain.Customer;
 import pl.matek.domain.FoodOrderingRequest;
 import pl.matek.domain.Order;
 import pl.matek.domain.Place;
+import pl.matek.domain.exception.NotFoundException;
 import pl.matek.domain.exception.ProcessingException;
 
 import java.time.OffsetDateTime;
@@ -106,19 +108,20 @@ public class CustomerController {
 
     @PostMapping(CREATE_ORDER)
     public String createOrder(
-            @Valid @ModelAttribute("MenuDTOs") MenusDTO menusDTO,
+            @Valid @ModelAttribute("MenuDTOs") @NotNull MenusDTO menusDTO,
             Authentication authentication,
             Model model
     ) {
+        if (Objects.isNull(menusDTO.getMenuDTOList())){
+            throw new NotFoundException("Not found product by created ordering");
+        }
         Customer customer = getCustomer(authentication);
         List<Order> orders = menusDTO.getMenuDTOList().stream()
                 .filter(x -> !Objects.isNull(x.getQuantity()) && x.getQuantity() > 0)
                 .map(menuDTO -> orderMapper.map(menuDTO)
                         .withProduct(productService.findByCode(menuDTO.getProductCode())))
                 .toList();
-        if (orders.size() > 0) {
-            foodOrderingRequestService.createTally(customer, orders);
-        }
+        foodOrderingRequestService.createTally(customer, orders);
         return "redirect:/";
     }
 
