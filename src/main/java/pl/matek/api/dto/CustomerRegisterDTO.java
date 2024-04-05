@@ -26,6 +26,7 @@ public class CustomerRegisterDTO {
     @Size(min = 4)
     private String password;
 
+    
     public static CustomerRegisterDTO buildDefaultData() {
         return CustomerRegisterDTO.builder()
                 .name("Zbyszek")

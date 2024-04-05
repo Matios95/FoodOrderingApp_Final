@@ -1,5 +1,6 @@
 package pl.matek.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -17,7 +18,6 @@ import pl.matek.domain.FoodOrderingRequest;
 import pl.matek.domain.Order;
 import pl.matek.domain.Place;
 import pl.matek.domain.exception.ProcessingException;
-import pl.matek.infrastructure.database.entity.PlaceEntity;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -28,12 +28,14 @@ import java.util.Objects;
 public class CustomerController {
 
     static final String CUSTOMER = "/customer";
-    static final String TALLY_INFO = "/customer/tally/{forId}/info";
+    static final String CREATE_ORDER = "/customer/createOrder";
     static final String PLACE_MENU = "/customer/{placeID}/menu";
     static final String SEARCH_PLACES = "/customer/searchPlaces";
+    static final String TALLY_INFO = "/customer/tally/{forId}/info";
     static final String TALLY_DELETE = "/customer/tally/{forId}/delete";
 
     static final Long MAX_MINUTE_DELETE_ORDER = 20L;
+    static final Integer PAGE_SIZE = 6;
 
     private final CustomerService customerService;
     private final FoodOrderingRequestService foodOrderingRequestService;
@@ -62,32 +64,31 @@ public class CustomerController {
         return "customer";
     }
 
-    @PostMapping(value = SEARCH_PLACES)
+    @GetMapping(value = SEARCH_PLACES)
     public String searchPlaces(
-            //todo walidacja
-            @ModelAttribute("searchPlace") SearchPlacesDTO searchPlacesDTO,
-            @RequestParam("pageNo") String pageNo,
+            @Valid @ModelAttribute("searchPlace") SearchPlacesDTO searchPlacesDTO,
+            @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+            @RequestParam(value = "sortField", required = false, defaultValue = "phone") String sortField,
+            @RequestParam(value = "sortDir", required = false, defaultValue = "asc") String sortDir,
             Model model
     ) {
 
-        System.out.println(pageNo);
+        Page<Place> allPlaceWithParam = placeService.findAllPlaceWithParam(searchPlacesDTO.getPostcode(), searchPlacesDTO.getStreet(),
+                pageNo, PAGE_SIZE, sortDir, sortField);
 
-//        int pageSize = 7;
-//        if (Objects.isNull(pageNo))
-//            pageNo = 1;
-//        Page<PlaceEntity> page = placeService.findPaginated(pageNo, pageSize);
-//        List<PlaceEntity> listPlaces = page.getContent();
-
-//        model.addAttribute("currentPage", pageNo);
-//        model.addAttribute("totalPages", page.getTotalPages());
-//        model.addAttribute("total", page.getTotalElements());
-//        model.addAttribute("listPlaces", listPlaces);
-
-        List<PlaceDTO> placeDTOs = placeService
-                .findAllPlaceWithParam(searchPlacesDTO.getPostcode(), searchPlacesDTO.getStreet()).stream()
+        List<PlaceDTO> placeDTOs = allPlaceWithParam.stream()
                 .map(placeMapper::map)
                 .toList();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("totalPages", allPlaceWithParam.getTotalPages());
+        model.addAttribute("totalItems", allPlaceWithParam.getTotalElements());
+
+        model.addAttribute("sortDir", sortDir);
         model.addAttribute("PlaceDTOs", placeDTOs);
+        model.addAttribute("searchPlace", searchPlacesDTO);
+        model.addAttribute("reversSortDir", sortDir.equals("asc") ? "desc" : "asc");
         return "searchPanel";
     }
 
@@ -103,10 +104,9 @@ public class CustomerController {
         return "placeMenu";
     }
 
-    @PostMapping(value = "/customer/searchPlacessss")//todo do zmiany nazwa
-    public String dasdadasds(
-            //todo walidacja
-            @ModelAttribute("MenuDTOs") MenusDTO menusDTO,
+    @PostMapping(CREATE_ORDER)
+    public String createOrder(
+            @Valid @ModelAttribute("MenuDTOs") MenusDTO menusDTO,
             Authentication authentication,
             Model model
     ) {

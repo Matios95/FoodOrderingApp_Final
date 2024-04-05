@@ -51,12 +51,12 @@ public class HomeController {
     }
 
     @GetMapping(value = "/")
-    public String homePage(Authentication authentication){
+    public String homePage(Authentication authentication) {
         Optional<String> firstRole = authentication.getAuthorities().stream()
                 .map(Object::toString)
                 .findFirst();
         String role = "error";
-        if (firstRole.isPresent()){
+        if (firstRole.isPresent()) {
             role = switch (firstRole.get()) {
                 case "OWNER" -> "redirect:/owner";
                 case "CUSTOMER" -> "redirect:/customer";
@@ -92,9 +92,8 @@ public class HomeController {
 
     @PostMapping(value = REGISTER_CUSTOMER_SAVE)
     public String registerCustomerSave(
-            //todo walidacja
-            @ModelAttribute("CustomerDTO") CustomerRegisterDTO customerRegisterDTO
-    ){
+            @Valid @ModelAttribute("CustomerDTO") CustomerRegisterDTO customerRegisterDTO
+    ) {
         customerRegisterDTO.setPassword(passwordEncoder.encode(customerRegisterDTO.getPassword()));
         CustomerRegister customerRegister = customerRegisterMapper.map(customerRegisterDTO);
         registerService.customerCreate(customerRegister);

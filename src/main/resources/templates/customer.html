@@ -49,19 +49,18 @@
     </br>
     <p>Search place:</p>
 
-    <form method="post"
+    <form method="get"
           role="form"
           th:action="@{/customer/searchPlaces}"
-          th:object="${searchPlace}"
     >
         <div class="row">
             <div class="col-md-4 mb-3">
                 <label for="validationCustom02">Post code</label>
-                <input type="text" th:field="*{postcode}" class="form-control" id="validationCustom02" placeholder="Post code">
+                <input type="text" th:name="postcode" class="form-control" id="validationCustom02" placeholder="Post code">
             </div>
             <div class="col-md-4 mb-3">
                 <label for="validationCustom03">Street</label>
-                <input type="text" th:field="*{street}" class="form-control" id="validationCustom03" placeholder="Street">
+                <input type="text" th:name="street" class="form-control" id="validationCustom03" placeholder="Street">
             </div>
         </div>
         <button class="btn btn-primary" type="submit">Search place</button>

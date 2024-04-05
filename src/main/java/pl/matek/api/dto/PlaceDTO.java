@@ -1,5 +1,6 @@
 package pl.matek.api.dto;
 
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,9 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 public class PlaceDTO {
 
-    //todo telefon regex!!
     private Integer placeId;
-    @Size(min = 2)
+
+    @Pattern(regexp = "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$")
     private String phone;
     private String name;
     private String country;

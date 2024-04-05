@@ -1,10 +1,11 @@
 package pl.matek.infrastructure.database.repository.jpa;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import pl.matek.domain.Place;
 import pl.matek.infrastructure.database.entity.OwnerEntity;
 import pl.matek.infrastructure.database.entity.PlaceEntity;
 
@@ -19,9 +20,9 @@ public interface PlaceJpaRepository extends JpaRepository<PlaceEntity, Integer> 
     Optional<PlaceEntity> findByPlaceId(Integer placeId);
 
     @Query("""
-                        SELECT prd FROM PlaceEntity prd
-                        WHERE prd.addressPlace.postcode = :postcode
-                        AND prd.addressPlace.street = :address
+            SELECT prd FROM PlaceEntity prd
+            WHERE prd.addressPlace.postcode = :postcode
+            AND prd.addressPlace.street = :address
             """)
-    List<PlaceEntity> findAllParams(final @Param("postcode") String postcode, final @Param("address") String street);
+    Page<PlaceEntity> findAllParams(final @Param("postcode") String postcode, final @Param("address") String street, Pageable pageable);
 }

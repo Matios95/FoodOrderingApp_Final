@@ -2,6 +2,7 @@ package pl.matek.infrastructure.database.repository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import pl.matek.business.dao.PlaceDAO;
@@ -46,15 +47,12 @@ public class PlaceRepository implements PlaceDAO {
     }
 
     @Override
-    public List<Place> findAllPlaceWithParam(String postcode, String street) {
-        return placeJpaRepository.findAllParams(postcode, street).stream()
+    public Page<Place> findAllPlaceWithParam(String postcode, String street, Pageable pageable) {
+        Page<PlaceEntity> allParams = placeJpaRepository.findAllParams(postcode, street, pageable);
+        List<Place> content = allParams.getContent().stream()
                 .map(placeEntityMapper::mapFromEntity)
                 .toList();
-    }
-
-    @Override
-    public Page<PlaceEntity> findAll(Pageable pageable) {
-        return placeJpaRepository.findAll(pageable);
+        return new PageImpl<>(content, allParams.getPageable(), allParams.getTotalElements());
     }
 
 

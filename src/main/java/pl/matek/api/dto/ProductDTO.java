@@ -19,7 +19,6 @@ public class ProductDTO {
     private List<String> type;
     private String name;
     private String description;
-    //todo walidacja ceny
     private BigDecimal price;
     private String imageByte;
     private MultipartFile image;
