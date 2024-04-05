@@ -1,6 +1,5 @@
 package pl.matek.api.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -24,7 +23,6 @@ import pl.matek.domain.Owner;
 import pl.matek.domain.Place;
 import pl.matek.domain.exception.ProcessingException;
 import pl.matek.infrastructure.database.entity.ProductType;
-import pl.matek.infrastructure.database.repository.jpa.FoodOrderingRequesJpaRepository;
 
 import java.util.*;
 
@@ -51,14 +49,9 @@ public class OwnerController {
     private final FoodOrderingRequestMapper foodOrderingRequestMapper;
     private final FoodOrderingRequestService foodOrderingRequestService;
 
-
-    private final FoodOrderingRequesJpaRepository foodOrderingRequesJpaRepository;
-
-
     @GetMapping(value = OWNER)
     public String ownerPanel(
             Authentication authentication,
-            HttpServletRequest request,
             Model model
     ) {
         String email = authentication.getName();
@@ -92,8 +85,7 @@ public class OwnerController {
     @PostMapping(value = PLACE_CREATE_ADD)
     private String placeCreateAdd(
             @Valid @ModelAttribute("PlaceDTO") PlaceDTO placeDTO,
-            Authentication authentication,
-            HttpServletRequest request
+            Authentication authentication
     ) {
         String email = authentication.getName();
         placeService.placeCreate(placeMapper.map(placeDTO).withOwner(getOwner(email)));
@@ -104,7 +96,6 @@ public class OwnerController {
     public String menuPanel(
             @PathVariable("placeId") Integer placeId,
             Authentication authentication,
-            HttpServletRequest request,
             Model model
     ) {
         checkOwner(placeId, authentication);
@@ -124,8 +115,7 @@ public class OwnerController {
     public String productAdd(
             @ModelAttribute("ProductDTO") ProductDTO productDTO,
             @PathVariable("placeId") Integer placeId,
-            Authentication authentication,
-            HttpServletRequest request
+            Authentication authentication
     ) {
         checkOwner(placeId, authentication);
         final String productCode = UUID.randomUUID().toString();
@@ -168,9 +158,8 @@ public class OwnerController {
 
     @GetMapping(value = COMPLETED_ORDER)
     public String completedOrder(
-            @PathVariable("forId") Integer forId,
-            Authentication authentication
-    ){
+            @PathVariable("forId") Integer forId
+    ) {
         foodOrderingRequestService.completed(forId);
         return "redirect:" + OWNER;
     }
@@ -180,8 +169,7 @@ public class OwnerController {
     }
 
     private Place getPlace(Integer placeId) {
-        Place place = placeService.findById(placeId);
-        return place;
+        return placeService.findById(placeId);
     }
 
     private void checkOwner(Integer placeId, Authentication authentication) {

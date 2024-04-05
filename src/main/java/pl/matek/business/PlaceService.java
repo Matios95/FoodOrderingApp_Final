@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.matek.business.dao.AddressDAO;
 import pl.matek.business.dao.PlaceDAO;
 import pl.matek.domain.Address;
 import pl.matek.domain.Owner;
@@ -24,7 +23,6 @@ import java.util.Optional;
 public class PlaceService {
 
     private final PlaceDAO placeDAO;
-    private final AddressDAO addressDAO;
     private final OwnerService ownerService;
     private final AddressService addressService;
 
@@ -35,9 +33,9 @@ public class PlaceService {
     }
 
     @Transactional
-    public Place placeCreate(Place place) {
+    public void placeCreate(Place place) {
         Address address = addressService.createAddress(place.getAddressPlace());
-        return placeDAO.createPlace(place.withAddressPlace(address));
+        placeDAO.createPlace(place.withAddressPlace(address));
     }
 
     @Transactional

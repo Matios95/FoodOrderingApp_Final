@@ -13,17 +13,17 @@ public class RegisterService {
     private final UserService userService;
     private final CustomerService customerService;
     private final AddressService addressService;
-    private final String ROLE_OWNER = "OWNER";
-    private final String ROLE_CUSTOMER = "CUSTOMER";
+    final String ROLE_OWNER = "OWNER";
+    final String ROLE_CUSTOMER = "CUSTOMER";
 
     @Transactional
     public void ownerCreate(OwnerRegister ownerRegister) {
-        User user = userService.userCreate(ROLE_OWNER, User.builder()
+        userService.userCreate(ROLE_OWNER, User.builder()
                 .email(ownerRegister.getEmail())
                 .password(ownerRegister.getPassword())
                 .active(true)
                 .build());
-        Owner owner = ownerService.ownerCreate(Owner.builder()
+        ownerService.ownerCreate(Owner.builder()
                 .name(ownerRegister.getName())
                 .surname(ownerRegister.getSurname())
                 .email(ownerRegister.getEmail())
@@ -32,7 +32,7 @@ public class RegisterService {
 
     @Transactional
     public void customerCreate(CustomerRegister customerRegister) {
-        User user = userService.userCreate(ROLE_CUSTOMER, User.builder()
+        userService.userCreate(ROLE_CUSTOMER, User.builder()
                 .email(customerRegister.getEmail())
                 .password(customerRegister.getPassword())
                 .active(true)
@@ -43,7 +43,7 @@ public class RegisterService {
                 .street(customerRegister.getStreet())
                 .streetNumber(customerRegister.getStreetNumber())
                 .build());
-        Customer customer = customerService.customerCreate(Customer.builder()
+        customerService.customerCreate(Customer.builder()
                 .email(customerRegister.getEmail())
                 .name(customerRegister.getName())
                 .surname(customerRegister.getSurname())

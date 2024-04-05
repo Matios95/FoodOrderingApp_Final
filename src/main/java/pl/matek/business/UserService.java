@@ -13,7 +13,7 @@ public class UserService {
 
     private final UserDAO userDAO;
 
-    public User userCreate(String role, User user) {
-        return userDAO.saveCreate(role, user);
+    public void userCreate(String role, User user) {
+        userDAO.saveCreate(role, user);
     }
 }

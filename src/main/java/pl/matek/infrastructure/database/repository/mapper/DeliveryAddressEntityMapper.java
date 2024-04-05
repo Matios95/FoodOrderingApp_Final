@@ -10,10 +10,6 @@ import pl.matek.infrastructure.database.entity.DeliveryAddressEntity;
 public interface DeliveryAddressEntityMapper {
 
     @Mapping(target = "placeDeliveryAddress", ignore = true)
-//    @Mapping(target = "placed.owner", ignore = true)
-//    @Mapping(target = "placed.addressPlace", ignore = true)
-//    @Mapping(target = "placed.productEntities", ignore = true)
-//    @Mapping(target = "placed.deliveryAddressEntities", ignore = true)
     DeliveryAddress mapFromEntity(DeliveryAddressEntity deliveryAddressEntity);
 
     @Mapping(target = "placed.placeId", source = "placeDeliveryAddress.placeId")

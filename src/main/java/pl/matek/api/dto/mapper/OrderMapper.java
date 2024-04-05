@@ -2,11 +2,9 @@ package pl.matek.api.dto.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import pl.matek.api.dto.MenuDTO;
 import pl.matek.api.dto.OrderDTO;
 import pl.matek.domain.Order;
-import pl.matek.infrastructure.database.entity.ProductType;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {

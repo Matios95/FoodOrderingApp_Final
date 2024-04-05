@@ -1,7 +1,9 @@
 package pl.matek.domain;
 
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.ToString;
+import lombok.Value;
+import lombok.With;
 
 import java.util.Set;
 

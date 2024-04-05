@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.Set;
 
@@ -29,9 +28,9 @@ public class UserEntity {
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
-        name = "food_ordering_app_user_role",
-        joinColumns = @JoinColumn(name = "email"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
+            name = "food_ordering_app_user_role",
+            joinColumns = @JoinColumn(name = "email"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<RoleEntity> roles;
 }

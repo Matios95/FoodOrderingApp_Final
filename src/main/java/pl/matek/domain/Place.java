@@ -1,7 +1,6 @@
 package pl.matek.domain;
 
 import lombok.*;
-import pl.matek.infrastructure.database.entity.DeliveryAddressEntity;
 
 import java.util.Set;
 

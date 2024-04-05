@@ -27,6 +27,6 @@ public class OwnerRepository implements OwnerDAO {
     @Override
     public Optional<Owner> findByEmail(String email) {
         return ownerJpaRepository.findByEmail(email)
-                .map(obc -> ownerEntityMapper.mapFromEntity(obc));
+                .map(ownerEntityMapper::mapFromEntity);
     }
 }

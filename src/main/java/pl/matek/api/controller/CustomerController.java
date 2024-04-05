@@ -128,7 +128,6 @@ public class CustomerController {
             Authentication authentication,
             Model model
     ) {
-        Customer customer = getCustomer(authentication);
         checkCustomer(forId, authentication);
         FoodOrderingRequest foodOrderingRequest = foodOrderingRequestService.findById(forId);
         OffsetDateTime orderTime = foodOrderingRequest.getDatetime();
