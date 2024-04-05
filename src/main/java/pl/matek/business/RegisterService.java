@@ -1,10 +1,12 @@
 package pl.matek.business;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.matek.domain.*;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class RegisterService {
@@ -28,6 +30,7 @@ public class RegisterService {
                 .surname(ownerRegister.getSurname())
                 .email(ownerRegister.getEmail())
                 .build());
+        log.debug("Owner is create: [%s]".formatted(ownerRegister.getEmail()));
     }
 
     @Transactional
@@ -49,5 +52,6 @@ public class RegisterService {
                 .surname(customerRegister.getSurname())
                 .addressCustomer(address)
                 .build());
+        log.debug("Customer create: [%s]".formatted(customerRegister.getEmail()));
     }
 }

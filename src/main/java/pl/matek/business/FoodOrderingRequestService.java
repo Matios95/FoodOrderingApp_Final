@@ -26,7 +26,9 @@ public class FoodOrderingRequestService {
 
     @Transactional
     public List<FoodOrderingRequest> findAllWithCustomer(Customer customer) {
-        return foodOrderingRequestDAO.findAllWithCustomer(customer);
+        List<FoodOrderingRequest> allWithCustomer = foodOrderingRequestDAO.findAllWithCustomer(customer);
+        log.info("Available food ordering request with customer: [%s]".formatted(allWithCustomer.size()));
+        return allWithCustomer;
     }
 
     @Transactional
@@ -49,10 +51,12 @@ public class FoodOrderingRequestService {
         orders.forEach(x -> orderService.create(x
                 .withFoodOrderingRequestEntity(request)
                 .withOrderaCode(UUID.randomUUID().toString())));
+        log.debug("Tally create: [%s]".formatted(customer.getCustomerId()));
     }
 
     @Transactional
     public void delete(Integer forId) {
+        log.debug("Food ordering is delete: [%s]".formatted(forId));
         foodOrderingRequestDAO.delete(forId);
     }
 
@@ -62,19 +66,20 @@ public class FoodOrderingRequestService {
         Map<Boolean, Set<FoodOrderingRequest>> collect = allPlaceOwner.stream()
                 .map(place -> productService.findAllProductWithPlace(place).stream()
                         .map(product -> orderService.findAllOrderWithProduct(product).stream()
-                                .map(order -> order.getFoodOrderingRequestEntity())
+                                .map(Order::getFoodOrderingRequestEntity)
                                 .toList())
                         .flatMap(List::stream)
                         .toList())
                 .flatMap(List::stream)
                 .collect(Collectors.groupingBy(
                         FoodOrderingRequest::getCompleted, Collectors.toSet()));
-
+        log.info("Available food ordering request: [%s]".formatted(collect.values().size()));
         return collect;
     }
 
     @Transactional
-        public void completed(Integer forId) {
+    public void completed(Integer forId) {
+        log.debug("Food ordering is completed: [%s]".formatted(forId));
         foodOrderingRequestDAO.completed(forId);
     }
 }

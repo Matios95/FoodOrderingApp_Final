@@ -19,10 +19,13 @@ public class ProductService {
 
     @Transactional
     public List<Product> findAllProductWithPlace(Place place) {
-        return productDAO.findAllProductWithPlace(place);
+        List<Product> allProductWithPlace = productDAO.findAllProductWithPlace(place);
+        log.info("Available product with place: [%s]".formatted(allProductWithPlace.size()));
+        return allProductWithPlace;
     }
 
     public void productCreate(Product product) {
+        log.debug("Product create: [%s]".formatted(product.getProductCode()));
         productDAO.productCreate(product);
     }
 

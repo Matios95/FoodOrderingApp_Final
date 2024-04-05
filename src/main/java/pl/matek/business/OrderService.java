@@ -20,7 +20,9 @@ public class OrderService {
 
     @Transactional
     public List<Order> findByFoodOrderingRequest(FoodOrderingRequest foodOrderingRequest) {
-        return orderProcessingDAO.findByFoodOrderingRequest(foodOrderingRequest);
+        List<Order> byFoodOrderingRequest = orderProcessingDAO.findByFoodOrderingRequest(foodOrderingRequest);
+        log.info("Available order: [%s]".formatted(byFoodOrderingRequest.size()));
+        return byFoodOrderingRequest;
     }
 
     public void create(Order order) {

@@ -29,13 +29,16 @@ public class PlaceService {
     @Transactional
     public List<Place> findAllPlaceWithOwner(String email) {
         Owner owner = ownerService.findOwner(email);
-        return placeDAO.findAllPlaceWithOwner(owner);
+        List<Place> allPlaceWithOwner = placeDAO.findAllPlaceWithOwner(owner);
+        log.info("Available place with owner: [%s]".formatted(allPlaceWithOwner.size()));
+        return allPlaceWithOwner;
     }
 
     @Transactional
     public void placeCreate(Place place) {
         Address address = addressService.createAddress(place.getAddressPlace());
         placeDAO.createPlace(place.withAddressPlace(address));
+        log.debug("Place create: [%s]".formatted(place.getOwner()));
     }
 
     @Transactional
@@ -52,6 +55,8 @@ public class PlaceService {
         Sort sort = sortDir
                 .equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-        return placeDAO.findAllPlaceWithParam(postcode, street, pageable);
+        Page<Place> allPlaceWithParam = placeDAO.findAllPlaceWithParam(postcode, street, pageable);
+        log.info("Available place with param: [%s]".formatted(allPlaceWithParam.getTotalElements()));
+        return allPlaceWithParam;
     }
 }

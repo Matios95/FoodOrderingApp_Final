@@ -26,7 +26,8 @@ public class CustomerService {
         return customer.get();
     }
 
-    public Customer customerCreate(Customer customer) {
-        return customerDAO.customerCreate(customer);
+    public void customerCreate(Customer customer) {
+        log.debug("Customer create: [%s]".formatted(customer.getEmail()));
+        customerDAO.customerCreate(customer);
     }
 }

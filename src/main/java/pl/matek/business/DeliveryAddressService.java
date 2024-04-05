@@ -19,11 +19,14 @@ public class DeliveryAddressService {
 
     @Transactional
     public List<DeliveryAddress> findAllDeliveryWithPlace(Place place) {
-        return deliveryAddressDAO.findAllDeliveryWithPlace(place);
+        List<DeliveryAddress> deliveryAddress = deliveryAddressDAO.findAllDeliveryWithPlace(place);
+        log.info("Available delivery address with place: [%s]".formatted(deliveryAddress.size()));
+        return deliveryAddress;
     }
 
     @Transactional
     public void deliveryAddressCreate(DeliveryAddress deliveryAddress) {
+        log.debug("Delivery address create: [%s]".formatted(deliveryAddress.getPlaceDeliveryAddress()));
         deliveryAddressDAO.create(deliveryAddress);
     }
 }
