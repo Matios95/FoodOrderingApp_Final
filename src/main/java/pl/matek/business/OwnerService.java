@@ -8,6 +8,7 @@ import pl.matek.business.dao.OwnerDAO;
 import pl.matek.domain.Owner;
 import pl.matek.domain.exception.NotFoundException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -28,5 +29,12 @@ public class OwnerService {
 
     public Owner ownerCreate(Owner owner) {
         return ownerDAO.saveOwner(owner);
+    }
+
+    @Transactional
+    public List<Owner> findAll() {
+        List<Owner> list = ownerDAO.findAll();
+        log.info("Available owners: [%s]".formatted(list.size()));
+        return list;
     }
 }

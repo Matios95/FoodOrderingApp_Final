@@ -13,6 +13,7 @@ public interface PlaceMapper {
     @Mapping(source = "addressPlace.postcode", target = "postcode")
     @Mapping(source = "addressPlace.street", target = "street")
     @Mapping(source = "addressPlace.streetNumber", target = "streetNumber")
+    @Mapping(target = "email", ignore = true)
     PlaceDTO map(Place place);
 
     default Place map(PlaceDTO placeDTO) {

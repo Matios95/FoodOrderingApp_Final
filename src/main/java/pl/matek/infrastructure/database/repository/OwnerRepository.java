@@ -8,6 +8,7 @@ import pl.matek.infrastructure.database.entity.OwnerEntity;
 import pl.matek.infrastructure.database.repository.jpa.OwnerJpaRepository;
 import pl.matek.infrastructure.database.repository.mapper.OwnerEntityMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -28,5 +29,12 @@ public class OwnerRepository implements OwnerDAO {
     public Optional<Owner> findByEmail(String email) {
         return ownerJpaRepository.findByEmail(email)
                 .map(ownerEntityMapper::mapFromEntity);
+    }
+
+    @Override
+    public List<Owner> findAll() {
+        return ownerJpaRepository.findAll().stream()
+                .map(ownerEntityMapper::mapFromEntity)
+                .toList();
     }
 }

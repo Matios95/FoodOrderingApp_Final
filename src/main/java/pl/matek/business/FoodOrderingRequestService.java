@@ -82,4 +82,12 @@ public class FoodOrderingRequestService {
         log.debug("Food ordering is completed: [%s]".formatted(forId));
         foodOrderingRequestDAO.completed(forId);
     }
+
+    @Transactional
+    public List<FoodOrderingRequest> findAllActive() {
+        List<FoodOrderingRequest> allActive = foodOrderingRequestDAO.findAllActive();
+        log.info("Available food ordering request is active: [%s]".formatted(allActive.size()));
+        return allActive;
+    }
+
 }

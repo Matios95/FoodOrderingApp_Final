@@ -1,16 +1,14 @@
 package pl.matek.domain;
 
-import lombok.Builder;
-import lombok.ToString;
-import lombok.Value;
-import lombok.With;
+import lombok.*;
 
 import java.util.Set;
 
 @With
 @Value
 @Builder
-@ToString(of = {"addressId", "country", "postcode", "streetNumber"})
+@EqualsAndHashCode(of = {"addressId", "country", "postcode", "street", "streetNumber"})
+@ToString(of = {"addressId", "country", "postcode", "street", "streetNumber"})
 public class Address {
     Integer addressId;
     String country;

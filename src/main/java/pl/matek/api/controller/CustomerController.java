@@ -2,7 +2,6 @@ package pl.matek.api.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -36,8 +35,8 @@ public class CustomerController {
     static final String TALLY_INFO = "/customer/tally/{forId}/info";
     static final String TALLY_DELETE = "/customer/tally/{forId}/delete";
 
-    static final Long MAX_MINUTE_DELETE_ORDER = 20L;
     static final Integer PAGE_SIZE = 6;
+    static final Long MAX_MINUTE_DELETE_ORDER = 20L;
 
     private final CustomerService customerService;
     private final FoodOrderingRequestService foodOrderingRequestService;
@@ -50,13 +49,9 @@ public class CustomerController {
     private final ProductMapper productMapper;
 
     @GetMapping(value = CUSTOMER)
-    public String customerPanel(
-            Authentication authentication,
-            Model model
-    ) {
+    public String customerPanel(Authentication authentication, Model model) {
         Customer customer = getCustomer(authentication);
-        List<FoodOrderingRequestDTO> foodOrderingRequestDTOs = foodOrderingRequestService
-                .findAllWithCustomer(customer).stream()
+        List<FoodOrderingRequestDTO> foodOrderingRequestDTOs = foodOrderingRequestService.findAllWithCustomer(customer).stream()
                 .filter(foodOrderingRequest -> !foodOrderingRequest.getCompleted())
                 .map(foodOrderingRequestMapper::map)
                 .toList();
@@ -71,16 +66,12 @@ public class CustomerController {
             @Valid @ModelAttribute("searchPlace") SearchPlacesDTO searchPlacesDTO,
             @RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
             @RequestParam(value = "sortField", required = false, defaultValue = "phone") String sortField,
-            @RequestParam(value = "sortDir", required = false, defaultValue = "asc") String sortDir,
-            Model model
-    ) {
+            @RequestParam(value = "sortDir", required = false, defaultValue = "asc") String sortDir, Model model) {
 
-        Page<Place> allPlaceWithParam = placeService.findAllPlaceWithParam(searchPlacesDTO.getPostcode(), searchPlacesDTO.getStreet(),
-                pageNo, PAGE_SIZE, sortDir, sortField);
+        Page<Place> allPlaceWithParam = placeService.findAllPlaceWithParam(
+                searchPlacesDTO.getPostcode(), searchPlacesDTO.getStreet(), pageNo, PAGE_SIZE, sortDir, sortField);
 
-        List<PlaceDTO> placeDTOs = allPlaceWithParam.stream()
-                .map(placeMapper::map)
-                .toList();
+        List<PlaceDTO> placeDTOs = allPlaceWithParam.stream().map(placeMapper::map).toList();
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("sortField", sortField);
@@ -95,24 +86,16 @@ public class CustomerController {
     }
 
     @GetMapping(value = PLACE_MENU)
-    public String placeMenu(
-            @PathVariable("placeID") Integer placeId,
-            Model model
-    ) {
+    public String placeMenu(@PathVariable("placeID") Integer placeId, Model model) {
         List<MenuDTO> menuDTOs = productService.findAllProductWithPlace(getPlace(placeId)).stream()
-                .map(productMapper::mapMenu)
-                .toList();
+                .map(productMapper::mapMenu).toList();
         model.addAttribute("MenuDTOs", new MenusDTO(menuDTOs));
         return "placeMenu";
     }
 
     @PostMapping(CREATE_ORDER)
-    public String createOrder(
-            @Valid @ModelAttribute("MenuDTOs") @NotNull MenusDTO menusDTO,
-            Authentication authentication,
-            Model model
-    ) {
-        if (Objects.isNull(menusDTO.getMenuDTOList())){
+    public String createOrder(@Valid @ModelAttribute("MenuDTOs") MenusDTO menusDTO, Authentication authentication, Model model) {
+        if (Objects.isNull(menusDTO.getMenuDTOList())) {
             throw new NotFoundException("Not found product by created ordering");
         }
         Customer customer = getCustomer(authentication);
@@ -126,11 +109,7 @@ public class CustomerController {
     }
 
     @GetMapping(value = TALLY_DELETE)
-    public String tallyDelete(
-            @PathVariable("forId") Integer forId,
-            Authentication authentication,
-            Model model
-    ) {
+    public String tallyDelete(@PathVariable("forId") Integer forId, Authentication authentication, Model model) {
         checkCustomer(forId, authentication);
         FoodOrderingRequest foodOrderingRequest = foodOrderingRequestService.findById(forId);
         OffsetDateTime orderTime = foodOrderingRequest.getDatetime();
@@ -145,13 +124,10 @@ public class CustomerController {
     @GetMapping(value = TALLY_INFO)
     public String tallyInfo(
             @PathVariable("forId") Integer forId,
-            Model model
-    ) {
+            Model model) {
         FoodOrderingRequest foodOrderingRequest = foodOrderingRequestService.findById(forId);
         FoodOrderingRequestDTO foodOrderingRequestDTO = foodOrderingRequestMapper.map(foodOrderingRequest);
-        List<OrderDTO> orderDTOs = orderService.findByFoodOrderingRequest(foodOrderingRequest).stream()
-                .map(orderMapper::map)
-                .toList();
+        List<OrderDTO> orderDTOs = orderService.findByFoodOrderingRequest(foodOrderingRequest).stream().map(orderMapper::map).toList();
         model.addAttribute("foodOrderingRequestDTO", foodOrderingRequestDTO);
         model.addAttribute("orderDTOs", orderDTOs);
         return "tally";
@@ -160,8 +136,7 @@ public class CustomerController {
     private void checkCustomer(Integer forId, Authentication authentication) {
         Customer customer = getCustomer(authentication);
         if (!customer.equals(getFor(forId).getCustomer())) {
-            throw new ProcessingException("Could not view food ordering request [%s] for customer [%s]"
-                    .formatted(forId, customer.getEmail()));
+            throw new ProcessingException("Could not view food ordering request [%s] for customer [%s]".formatted(forId, customer.getEmail()));
         }
     }
 

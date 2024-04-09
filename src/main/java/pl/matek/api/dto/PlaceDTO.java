@@ -1,5 +1,6 @@
 package pl.matek.api.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,4 +22,6 @@ public class PlaceDTO {
     private String postcode;
     private String street;
     private Integer streetNumber;
+    @Email
+    private String email;
 }
