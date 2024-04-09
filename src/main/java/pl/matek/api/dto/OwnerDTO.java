@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OwnerDTO {
 
+    private Integer ownerId;
     @Email
     private String email;
     private String name;

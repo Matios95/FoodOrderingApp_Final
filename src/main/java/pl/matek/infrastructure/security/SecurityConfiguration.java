@@ -47,8 +47,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/owner/**").hasAnyAuthority("OWNER")
                                 .requestMatchers("/customer/**").hasAnyAuthority("CUSTOMER")
                                 .requestMatchers("/").hasAnyAuthority("OWNER", "CUSTOMER")
-                        //                .requestMatchers("/salesman/**", "/purchase/**", "/service/**").hasAnyAuthority("SALESMAN")
-                        //                .requestMatchers("/api/**").hasAnyAuthority("REST_API")
+                                .requestMatchers("/api/**").hasAnyAuthority("REST")
                 )
                 .formLogin(form -> form
                         .usernameParameter("username")
@@ -89,11 +88,11 @@ public class SecurityConfiguration {
     @Bean
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "false")
     SecurityFilterChain securityDisabled(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(requests -> requests
-                        .anyRequest()
-                        .authenticated())
-                .formLogin(form -> form
-                        .permitAll());
+        http.csrf()
+                .disable()
+                .authorizeHttpRequests()
+                .anyRequest()
+                .permitAll();
         return http.build();
     }
 

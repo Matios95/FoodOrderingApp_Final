@@ -55,5 +55,12 @@ public class PlaceRepository implements PlaceDAO {
         return new PageImpl<>(content, allParams.getPageable(), allParams.getTotalElements());
     }
 
+    @Override
+    public List<Place> findAll() {
+        return placeJpaRepository.findAll().stream()
+                .map(placeEntityMapper::mapFromEntity)
+                .toList();
+    }
+
 
 }

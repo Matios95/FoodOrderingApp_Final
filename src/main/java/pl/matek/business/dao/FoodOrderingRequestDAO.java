@@ -17,4 +17,6 @@ public interface FoodOrderingRequestDAO {
     void delete(Integer forId);
 
     void completed(Integer forId);
+
+    List<FoodOrderingRequest> findAllActive();
 }

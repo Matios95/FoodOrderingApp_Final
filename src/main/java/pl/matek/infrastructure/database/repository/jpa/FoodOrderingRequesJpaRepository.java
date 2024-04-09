@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface FoodOrderingRequesJpaRepository extends JpaRepository<FoodOrderingRequestEntity, Integer> {
     List<FoodOrderingRequestEntity> findByCustomer(CustomerEntity customerEntity);
+
+    List<FoodOrderingRequestEntity> findAllByCompleted(boolean completed);
 }

@@ -59,4 +59,11 @@ public class PlaceService {
         log.info("Available place with param: [%s]".formatted(allPlaceWithParam.getTotalElements()));
         return allPlaceWithParam;
     }
+
+    @Transactional
+    public List<Place> findAll() {
+        List<Place> list = placeDAO.findAll();
+        log.info("Available places: [%s]".formatted(list.size()));
+        return list;
+    }
 }

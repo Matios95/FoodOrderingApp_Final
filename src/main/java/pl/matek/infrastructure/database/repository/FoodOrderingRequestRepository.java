@@ -59,4 +59,12 @@ public class FoodOrderingRequestRepository implements FoodOrderingRequestDAO {
         foodOrderingRequesJpaRepository.save(toSave.get());
     }
 
+    @Override
+    public List<FoodOrderingRequest> findAllActive() {
+        List<FoodOrderingRequestEntity> allByCompleted = foodOrderingRequesJpaRepository.findAllByCompleted(false);
+        return allByCompleted.stream()
+                .map(foodOrderingRequestEntityMapper::mapFromEntity)
+                .toList();
+    }
+
 }

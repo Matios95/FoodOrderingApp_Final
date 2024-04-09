@@ -16,4 +16,6 @@ public interface PlaceDAO {
     Optional<Place> findById(Integer placeId);
 
     Page<Place> findAllPlaceWithParam(String postcode, String street, Pageable pageable);
+
+    List<Place> findAll();
 }
